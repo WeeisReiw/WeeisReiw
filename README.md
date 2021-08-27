@@ -1,3 +1,6 @@
-<b>b0mb3r-android</b> - Проект переноса функционала старого b0mb3r с исправлениями, для Android.
-<br>
-<img width="32" src=""></img>
+<p align="center">
+  <img width="260" src="https://github.com/kotleni/b0mb3r-android/blob/master/android.jpg?raw=true"></img>
+  <br><br>
+  <b>b0mb3r-android</b><br>
+  Простой SMS-бомбер для Android.
+ </p>

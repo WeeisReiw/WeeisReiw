@@ -1,37 +1,31 @@
-package kotleni.b0mb3r.services;
+package kotleni.b0mb3r.services
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import okhttp3.Request.Builder
+import org.json.JSONObject
+import org.json.JSONException
+import okhttp3.Request
 
-import okhttp3.Request;
-
-public class CarSmile extends JsonService {
-
-    public CarSmile() {
-        setUrl("https://api.carsmile.com/");
-        setMethod(POST);
+class CarSmile : JsonService() {
+    override fun buildRequest(builder: Builder): Request {
+        builder.addHeader("User-Agent", "okhttp/3.12.1")
+        builder.addHeader("authorization", "Bearer null")
+        return super.buildRequest(builder)
     }
 
-    @Override
-    public Request buildRequest(Request.Builder builder) {
-        builder.addHeader("User-Agent", "okhttp/3.12.1");
-        builder.addHeader("authorization", "Bearer null");
-
-        return super.buildRequest(builder);
-    }
-
-    @Override
-    public String buildJson() {
-        JSONObject json = new JSONObject();
-
+    override fun buildJson(): String {
+        val json = JSONObject()
         try {
-            json.put("operationName", "enterPhone");
-            json.put("variables", new JSONObject().put("phone", getFormattedPhone()));
-            json.put("query", "mutation enterPhone($phone: String!) {\n  enterPhone(phone: $phone)\n}\n");
-        } catch (JSONException e) {
-            e.printStackTrace();
+            json.put("operationName", "enterPhone")
+            json.put("variables", JSONObject().put("phone", formattedPhone))
+            json.put("query", "mutation enterPhone(\$phone: String!) {\n  enterPhone(phone: \$phone)\n}\n")
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
+        return json.toString()
+    }
 
-        return json.toString();
+    init {
+        setUrl("https://api.carsmile.com/")
+        setMethod(POST)
     }
 }

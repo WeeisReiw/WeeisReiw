@@ -3,6 +3,6 @@
     <color name="main">#df3347</color>
     <color name="main_activate">#BA2435</color>
 
-    <color name="bg">#ffffff</color>
-    <color name="bg_bar">#f5f5f5</color>
+    <color name="bg">#212121</color>
+    <color name="bg_bar">#3C3C3C</color>
 </resources>

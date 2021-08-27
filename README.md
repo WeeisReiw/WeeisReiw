@@ -4,5 +4,5 @@
   <b>b0mb3r-android</b><br>
   Простой SMS-бомбер для Android.
   <br><br>
-  <a href="https://github.com/kotleni/b0mb3r-android/releases/download/dev/app-release.apk">Скачать APK</a>
+  <a href="https://github.com/kotleni/b0mb3r-android/releases/">Скачать APK</a>
  </p>

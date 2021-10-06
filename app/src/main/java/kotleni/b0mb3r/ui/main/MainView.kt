@@ -4,6 +4,8 @@ interface MainView {
     fun openUrl(url: String)
     fun setOnGithubOpen(handler: () -> Unit)
     fun setOnStart(handler: () -> Unit)
+    fun setOnProxyList(handler: () -> Unit)
     fun startAttack()
     fun loadPrefs()
+    fun openProxiesDialog()
 }

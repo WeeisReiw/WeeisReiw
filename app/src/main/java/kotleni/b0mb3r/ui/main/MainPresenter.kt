@@ -12,5 +12,9 @@ class MainPresenter(var view: MainView, var repo: MainRepository) {
         view.setOnGithubOpen {
             view.openUrl(Static.GITHUB_URL)
         }
+
+        view.setOnProxyList {
+            view.openProxiesDialog()
+        }
     }
 }

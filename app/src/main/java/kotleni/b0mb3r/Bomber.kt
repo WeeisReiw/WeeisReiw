@@ -1,5 +1,7 @@
 package kotleni.b0mb3r
 
+import kotleni.b0mb3r.ui.main.MainRepository
+
 class Bomber(var target: Phone, var cycles: Int): AttackManager.Callback {
     private var handlerProgress: ((value: Int) -> Unit)? = null
     private var handlerFinish: (() -> Unit)? = null

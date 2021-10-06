@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">b0mb3r</string>
+
+    <string name="input_invalid">Проверьте правильность введеныхх данных!</string>
+    <string name="proxy_list">Список прокси</string>
+    <string name="proj_ongit">Проект на Github</string>
+    <string name="run">Запустить</string>
+    <string name="loopscount">Количество повторов</string>
+    <string name="mobile_number">Номер телефона</string>
 </resources>

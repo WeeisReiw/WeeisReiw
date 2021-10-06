@@ -32,7 +32,7 @@
             android:layout_margin="8dp"
             android:background="@drawable/edt"
             android:inputType="phone"
-            android:hint="Номер телефона"/>
+            android:hint="@string/mobile_number"/>
 
     <EditText
             android:id="@+id/cycles"
@@ -42,7 +42,7 @@
             android:layout_margin="8dp"
             android:background="@drawable/edt"
             android:inputType="numberDecimal"
-            android:hint="Количество повторов"/>
+            android:hint="@string/loopscount"/>
 
     <com.google.android.material.button.MaterialButton
             android:id="@+id/start_btn"
@@ -54,7 +54,19 @@
             android:layout_marginTop="16dp"
             app:backgroundTint="@null"
             android:textColor="#ffffff"
-            android:text="Запустить"/>
+            android:text="@string/run"/>
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/proxies_btn"
+            android:background="@drawable/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff"
+            android:text="@string/proxy_list"/>
 </LinearLayout>
 
     <TextView
@@ -68,6 +80,6 @@
             android:background="@color/bg_bar"
             android:textSize="16sp"
             android:textColor="@color/main"
-            android:text="Проект на Github"/>
+            android:text="@string/proj_ongit"/>
 
 </LinearLayout>

@@ -9,6 +9,9 @@ import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
@@ -20,6 +23,8 @@ import kotleni.b0mb3r.databinding.DialogProxiesBinding
 import kotleni.b0mb3r.ui.progress.ProgressDialog
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 
@@ -28,13 +33,21 @@ class MainActivity : AppCompatActivity(), MainView {
         var repository: MainRepository? = null
     }
 
-
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val repo: MainRepository by lazy { MainRepository(getSharedPreferences(packageName, MODE_PRIVATE)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+//        val testDeviceIds = Arrays.asList("119D264F27A04CEFA80BE527A0CD0C40")
+//        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+//        MobileAds.setRequestConfiguration(configuration)
+        MobileAds.initialize(this) { }
+        val adRequest = AdRequest.Builder()
+            .build()
+        binding.adView.loadAd(adRequest)
+
 
         MainActivity.repository = repo
         MainPresenter(this, repo)

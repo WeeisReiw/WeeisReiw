@@ -28,6 +28,7 @@ class AttackManager(callback: Callback) {
     private var attack: Attack? = null
     private val callback: Callback
     private var ignoreCode = false
+
     fun performAttack(phoneCode: String, phone: String?, cycles: Int) {
         attack = Attack(phoneCode, phone, cycles)
         attack!!.start()
@@ -92,11 +93,9 @@ class AttackManager(callback: Callback) {
 
                         override fun onResponse(call: Call, response: Response) {
                             if (!response.isSuccessful) {
-                                Log.i(
-                                    TAG, String.format(
+                                Log.i(TAG, String.format(
                                         "%s returned an error HTTP code: %s",
-                                        service.javaClass.name, response.code
-                                    )
+                                        service.javaClass.name, response.code)
                                 )
                             }
                             tasks!!.countDown()
@@ -127,7 +126,7 @@ class AttackManager(callback: Callback) {
                 if(proxies.isNotEmpty()) {
                     val cur = proxies[proxyId]
                     it.proxy(Proxy(Proxy.Type.HTTP, InetSocketAddress(cur.ip, cur.port.toInt())))
-                    println("Used proxy ${cur}")
+                    println("Used proxy $cur")
                 }
 
                 it.addInterceptor(Interceptor { chain ->
@@ -177,7 +176,7 @@ class AttackManager(callback: Callback) {
             Privileges(), NearKitchen(), Citydrive(), BelkaCar(),
             Mozen(), MosMetro(), BCS(), Dostavista(),
             Metro(), Niyama(), RabotaRu(), Sunlight(),
-            TikTok(), Zoloto585()
+            TikTok(), Zoloto585(), ABank24()
         )
     }
 }

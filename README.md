@@ -1,8 +1,10 @@
-# Android Bomber
-Открытый SMS Bomber на Android
-
-| ![screenshot1](https://user-images.githubusercontent.com/53375304/132372699-6dcf16be-a90b-44a7-af9b-d1dfeccb09a3.png) | ![screenshot2](https://user-images.githubusercontent.com/53375304/132372703-93edec31-d083-4714-b362-1e76f6c926e0.png) |
-|-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-
-## Контакты
-Канал в телеграмме: [@androidsmsbomber](https://t.me/androidsmsbomber)
+<p align="center">
+  <img width="260" src="https://github.com/kotleni/b0mb3r-android/blob/master/android.jpg?raw=true"></img>
+  <br><br>
+  <b>b0mb3r-android</b><br>
+  Простой SMS-бомбер для Android.
+  <br><br>
+  <a href="https://github.com/kotleni/b0mb3r-android/releases/">Скачать APK</a>
+  <br>
+  <a href="https://t.me/b0mb3r_apk">Канал в Telegram</a>
+ </p>

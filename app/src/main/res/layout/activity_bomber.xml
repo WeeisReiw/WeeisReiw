@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="64dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher"/>
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/edt"
+            android:inputType="phone"
+            android:hint="Номер телефона"/>
+
+        <EditText
+            android:id="@+id/cycles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/edt"
+            android:inputType="numberDecimal"
+            android:hint="Количество попыток"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_btn"
+            android:background="@drawable/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff"
+            android:text="Запуск"/>
+
+        <!--com.google.android.material.button.MaterialButton
+            android:id="@+id/proxies_btn"
+            android:background="@drawable/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            app:backgroundTint="@null"
+            android:textColor="@color/main"
+            android:text="Подключить прокси"/-->
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/github_lnk"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:background="@color/bg_bar"
+        android:textSize="16sp"
+        android:textColor="@color/main"
+        android:text="Проект на Github"/>
+
+</LinearLayout>

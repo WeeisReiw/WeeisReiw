@@ -22,7 +22,7 @@ public class Attack extends Thread {
     private final String countryCode;
     private final String phone;
     private final int numberOfCycles;
-    private final List<AuthProxy> proxies;
+    // private final List<AuthProxy> proxies;
 
     private int progress = 0;
 
@@ -40,13 +40,13 @@ public class Attack extends Thread {
                 return response;
             });
 
-    public Attack(Callback callback, String countryCode, String phone, int cycles, List<AuthProxy> proxies) {
+    public Attack(Callback callback, String countryCode, String phone, int cycles/*, List<AuthProxy> proxies*/) {
         super(phone);
 
         this.callback = callback;
         this.countryCode = countryCode;
         this.phone = phone;
-        this.proxies = proxies;
+        // this.proxies = proxies;
 
         numberOfCycles = cycles;
     }
@@ -61,11 +61,11 @@ public class Attack extends Thread {
         clientBuilder.proxy(null);
 
         for (int cycle = 0; cycle < numberOfCycles; cycle++) {
-            if (!proxies.isEmpty()) {
-                AuthProxy authProxy = proxies.get(cycle % proxies.size());
-                clientBuilder.proxy(authProxy)
-                        .proxyAuthenticator(authProxy);
-            }
+//            if (!proxies.isEmpty()) {
+//                AuthProxy authProxy = proxies.get(cycle % proxies.size());
+//                clientBuilder.proxy(authProxy)
+//                        .proxyAuthenticator(authProxy);
+//            }
 
             OkHttpClient client = clientBuilder.build();
 

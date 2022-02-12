@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Aitu extends JsonService {
-
     public Aitu() {
         setUrl("https://passport.aitu.io/api/v1/sms/request-code");
         setMethod(POST);

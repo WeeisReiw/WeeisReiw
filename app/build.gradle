@@ -1,23 +1,26 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
 }
 
 android {
-    compileSdkVersion 30
-    // buildToolsVersion "30.0.0"
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        viewBinding true
+    }
 
     defaultConfig {
-        applicationId "kotleni.b0mb3r"
-        minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 6
-        versionName "0.6"
+        applicationId "com.dm.bomber"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 13
+        versionName "1.9"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -26,23 +29,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-    implementation 'com.google.code.gson:gson:2.8.8'
-    implementation 'com.google.android.gms:play-services-ads:20.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'jp.wasabeef:blurry:4.0.0'
+    implementation 'com.github.jetradarmobile:android-snowfall:1.2.1'
 }

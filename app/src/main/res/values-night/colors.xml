@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="main">#df3347</color>
-    <color name="main_activate">#BA2435</color>
-
-    <color name="bg">#212121</color>
-    <color name="bg_bar">#3C3C3C</color>
-</resources>

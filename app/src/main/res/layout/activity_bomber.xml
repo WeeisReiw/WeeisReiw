@@ -71,18 +71,39 @@
             android:text="Подключить прокси"/-->
     </LinearLayout>
 
-    <TextView
-        style="@style/Theme.B0mb3r.BottomBar"
-        android:id="@+id/github_lnk"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:background="@color/bg_bar"
-        android:textSize="16sp"
-        android:textColor="@color/main"
-        android:text="Проект на Github"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/Theme.B0mb3r.BottomBar"
+            android:id="@+id/tg_lnk"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:background="@color/bg_bar"
+            android:textSize="16sp"
+            android:textColor="@color/main"
+            android:text="Telegram"/>
+
+        <TextView
+            style="@style/Theme.B0mb3r.BottomBar"
+            android:id="@+id/github_lnk"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:background="@color/bg_bar"
+            android:textSize="16sp"
+            android:textColor="@color/main"
+            android:text="Github"/>
+    </LinearLayout>
 
 </LinearLayout>

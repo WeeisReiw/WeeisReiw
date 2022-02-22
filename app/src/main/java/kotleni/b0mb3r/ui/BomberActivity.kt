@@ -2,6 +2,7 @@ package kotleni.b0mb3r.ui
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -20,6 +21,7 @@ class BomberActivity : AppCompatActivity(), MainView {
     }
 
     private val githubLnk: TextView by lazy { findViewById(R.id.github_lnk) }
+    private val telegramLnk: TextView by lazy { findViewById(R.id.tg_lnk) }
     private val startBtn: MaterialButton by lazy { findViewById(R.id.start_btn) }
     private val cyclesText: EditText by lazy { findViewById(R.id.cycles) }
     private val phoneText: EditText by lazy { findViewById(R.id.phone) }
@@ -30,6 +32,18 @@ class BomberActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bomber)
+
+        // fixme
+        logoImage.setOnLongClickListener {
+            val app = packageManager.getPackageInfo(packageName, 0)
+            Toast.makeText(this, "${app.versionName} (${app.versionCode})", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        // fixme
+        telegramLnk.setOnClickListener {
+            openUrl("https://t.me/b0mb3r_apk")
+        }
 
         globalRepository = repo
         MainPresenter(this, repo)

@@ -4,7 +4,9 @@
   <b>b0mb3r-android</b><br>
   Простой SMS-бомбер для Android.
   <br>
+  <a href="https://github.com/kotleni/b0mb3r-android/actions">
   <img src="https://github.com/kotleni/b0mb3r-android/actions/workflows/android.yml/badge.svg"/>
+  </a>
   <br><br>
   <a href="https://github.com/kotleni/b0mb3r-android/releases/">Скачать APK</a>
   <br>

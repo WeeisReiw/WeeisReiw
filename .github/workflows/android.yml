@@ -32,4 +32,4 @@ jobs:
         name: release
         path: |
           app/release/
-          !output-metadata.json
+          app-release.apk

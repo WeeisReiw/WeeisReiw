@@ -2,18 +2,23 @@ package kotleni.b0mb3r.ui
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.dm.bomber.R
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.button.MaterialButton
 import kotleni.b0mb3r.Bomber
 import kotleni.b0mb3r.Phone
+import kotleni.b0mb3r.TELEGRAM_URL
 import kotleni.b0mb3r.ui.dialog.ProgressDialog
+
 
 class BomberActivity : AppCompatActivity(), MainView {
     companion object {
@@ -27,11 +32,43 @@ class BomberActivity : AppCompatActivity(), MainView {
     private val phoneText: EditText by lazy { findViewById(R.id.phone) }
     private val logoImage: ImageView by lazy { findViewById(R.id.logo) }
 
+    private var mInterstitialAd: InterstitialAd? = null
+
     private val repo: MainRepository by lazy { MainRepository(getSharedPreferences(packageName, MODE_PRIVATE)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bomber)
+
+        MobileAds.initialize(this) { }
+        val adRequest: AdRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(this, "ca-app-pub-8334416213766495/7971745745", adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                        override fun onAdDismissedFullScreenContent() {
+                            //Log.d(TAG, 'Ad was dismissed.')
+                        }
+
+                        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                            //Log.d(TAG, 'Ad failed to show.')
+                        }
+
+                        override fun onAdShowedFullScreenContent() {
+                            //Log.d(TAG, 'Ad showed fullscreen content.')
+                            mInterstitialAd = null
+                        }
+                    }
+
+                    mInterstitialAd?.show(this@BomberActivity)
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+            })
 
         // fixme
         logoImage.setOnLongClickListener {
@@ -42,7 +79,7 @@ class BomberActivity : AppCompatActivity(), MainView {
 
         // fixme
         telegramLnk.setOnClickListener {
-            openUrl("https://t.me/b0mb3r_apk")
+            openUrl(TELEGRAM_URL)
         }
 
         globalRepository = repo

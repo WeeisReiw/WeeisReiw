@@ -27,9 +27,7 @@ class Bomber(var target: Phone, var cycles: Int): Callback {
             handlerFinish!!.invoke()
     }
 
-    override fun onAttackStart(serviceCount: Int, numberOfCycles: Int) {
-
-    }
+    override fun onAttackStart(serviceCount: Int, numberOfCycles: Int) { }
 
     override fun onProgressChange(progress: Int) {
         if(handlerProgress != null)

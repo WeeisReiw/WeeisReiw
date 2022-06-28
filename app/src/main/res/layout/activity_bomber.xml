@@ -8,6 +8,16 @@
     android:orientation="vertical"
     android:gravity="center">
 
+<!--    <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="8dp"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textStyle="bold"-->
+<!--            android:background="@color/main"-->
+<!--            android:text="Эксперементальная версия"/>-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,17 +30,25 @@
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginBottom="64dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher"/>
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Сервисов: 40"/>
+
         <EditText
+                android:layout_marginTop="64dp"
             style="@style/Theme.B0mb3r.EditText"
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:layout_margin="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
             android:background="@drawable/edt"
             android:inputType="phone"
             android:hint="Номер телефона"/>

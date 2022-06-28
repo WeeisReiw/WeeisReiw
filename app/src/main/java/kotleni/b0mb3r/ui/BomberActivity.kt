@@ -10,9 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dm.bomber.R
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.button.MaterialButton
 import kotleni.b0mb3r.Bomber
 import kotleni.b0mb3r.Phone
@@ -39,36 +36,6 @@ class BomberActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bomber)
-
-//        MobileAds.initialize(this) { }
-//        val adRequest: AdRequest = AdRequest.Builder().build()
-
-//        InterstitialAd.load(this, "ca-app-pub-8334416213766495/7971745745", adRequest,
-//            object : InterstitialAdLoadCallback() {
-//                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-//                    mInterstitialAd = interstitialAd
-//                    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-//                        override fun onAdDismissedFullScreenContent() {
-//                            //Log.d(TAG, 'Ad was dismissed.')
-//                        }
-//
-//                        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-//                            //Log.d(TAG, 'Ad failed to show.')
-//                        }
-//
-//                        override fun onAdShowedFullScreenContent() {
-//                            //Log.d(TAG, 'Ad showed fullscreen content.')
-//                            mInterstitialAd = null
-//                        }
-//                    }
-//
-//                    mInterstitialAd?.show(this@BomberActivity)
-//                }
-//
-//                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-//                    mInterstitialAd = null
-//                }
-//            })
 
         logoImage.setOnLongClickListener {
             val app = packageManager.getPackageInfo(packageName, 0)

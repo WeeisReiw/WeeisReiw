@@ -34,17 +34,15 @@ public abstract class Service {
     }
 
     public static String getEmail() {
-        Random random = new Random();
-        return getUserName() + "@" + new String[]{"gmail.com", "mail.ru", "yandex.ru"}[random.nextInt(3)];
+        return getUserName() + "@" + new String[]{"gmail.com", "mail.ru", "yandex.ru"}[new Random().nextInt(3)];
     }
 
     public static String format(String phone, String mask) {
         StringBuilder formattedPhone = new StringBuilder();
 
         int index = 0;
-        for (char symbol : mask.toCharArray()) {
+        for (char symbol : mask.toCharArray())
             formattedPhone.append(symbol == '*' ? phone.charAt(index++) : symbol);
-        }
 
         return formattedPhone.toString();
     }

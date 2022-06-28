@@ -6,7 +6,7 @@ data class Phone(
 ) {
     companion object {
         fun parseFrom(line: String): Phone? {
-            listOf("+380", "+7", "+375").forEach { // Украина, Россия, Беларусь
+            listOf("+380", "+7", "+375", "+48").forEach { // Украина, Россия, Беларусь, Польша
                 if(line.startsWith(it)) { // ...
                     val start = line.indexOf(it)
                     if(start == 0) {

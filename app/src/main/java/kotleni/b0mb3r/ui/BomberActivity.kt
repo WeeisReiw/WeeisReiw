@@ -32,7 +32,7 @@ class BomberActivity : AppCompatActivity(), MainView {
     private val phoneText: EditText by lazy { findViewById(R.id.phone) }
     private val logoImage: ImageView by lazy { findViewById(R.id.logo) }
 
-    private var mInterstitialAd: InterstitialAd? = null
+    //private var mInterstitialAd: InterstitialAd? = null
 
     private val repo: MainRepository by lazy { MainRepository(getSharedPreferences(packageName, MODE_PRIVATE)) }
 
@@ -40,44 +40,42 @@ class BomberActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bomber)
 
-        MobileAds.initialize(this) { }
-        val adRequest: AdRequest = AdRequest.Builder().build()
+//        MobileAds.initialize(this) { }
+//        val adRequest: AdRequest = AdRequest.Builder().build()
 
-        InterstitialAd.load(this, "ca-app-pub-8334416213766495/7971745745", adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
-                    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-                        override fun onAdDismissedFullScreenContent() {
-                            //Log.d(TAG, 'Ad was dismissed.')
-                        }
+//        InterstitialAd.load(this, "ca-app-pub-8334416213766495/7971745745", adRequest,
+//            object : InterstitialAdLoadCallback() {
+//                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+//                    mInterstitialAd = interstitialAd
+//                    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+//                        override fun onAdDismissedFullScreenContent() {
+//                            //Log.d(TAG, 'Ad was dismissed.')
+//                        }
+//
+//                        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+//                            //Log.d(TAG, 'Ad failed to show.')
+//                        }
+//
+//                        override fun onAdShowedFullScreenContent() {
+//                            //Log.d(TAG, 'Ad showed fullscreen content.')
+//                            mInterstitialAd = null
+//                        }
+//                    }
+//
+//                    mInterstitialAd?.show(this@BomberActivity)
+//                }
+//
+//                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+//                    mInterstitialAd = null
+//                }
+//            })
 
-                        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-                            //Log.d(TAG, 'Ad failed to show.')
-                        }
-
-                        override fun onAdShowedFullScreenContent() {
-                            //Log.d(TAG, 'Ad showed fullscreen content.')
-                            mInterstitialAd = null
-                        }
-                    }
-
-                    mInterstitialAd?.show(this@BomberActivity)
-                }
-
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    mInterstitialAd = null
-                }
-            })
-
-        // fixme
         logoImage.setOnLongClickListener {
             val app = packageManager.getPackageInfo(packageName, 0)
             Toast.makeText(this, "${app.versionName} (${app.versionCode})", Toast.LENGTH_SHORT).show()
             true
         }
 
-        // fixme
         telegramLnk.setOnClickListener {
             openUrl(TELEGRAM_URL)
         }
@@ -93,7 +91,7 @@ class BomberActivity : AppCompatActivity(), MainView {
         val phone = Phone.parseFrom(phoneText.text.toString())
 
         if(phone == null) {
-            Toast.makeText(this, "Ошибка разбора номера.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ошибка разбора номера", Toast.LENGTH_SHORT).show()
         } else {
             val dialog = ProgressDialog(this)
             val bomber = Bomber(phone, cyclesText.text.toString().toInt())

@@ -2,7 +2,7 @@
   <br><br>
   <b>b0mb3r-android</b><br>
   Открытый SMS-бомбер для Android.<br><br>
-  Данная программа предоставлена исключительно в ознакомительных целях.
+  Данная программа предоставлена исключительно<br> в ознакомительных целях.
   <br><br>
   <a href="https://github.com/kotleni/b0mb3r-android/actions">
   <img src="https://github.com/kotleni/b0mb3r-android/actions/workflows/android.yml/badge.svg"/>

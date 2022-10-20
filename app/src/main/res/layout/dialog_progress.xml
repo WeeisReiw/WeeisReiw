@@ -6,17 +6,17 @@
     android:layout_height="200dp"
     android:gravity="center">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_launcher"/>
+<!--    <ImageView-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:src="@drawable/ic_launcher"/>-->
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/indicator"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:indeterminate="false"
+        android:indeterminate="true"
         app:indicatorColor="@color/main"/>
 
 </LinearLayout>

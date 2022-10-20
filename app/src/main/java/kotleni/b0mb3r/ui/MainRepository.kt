@@ -1,32 +1,30 @@
 package kotleni.b0mb3r.ui
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.Credentials
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
+import kotleni.b0mb3r.worker.AuthableProxy
+import java.net.InetSocketAddress
+import java.net.Proxy
 
-class MainRepository(var prefs: SharedPreferences) {
+class MainRepository(context: Context) : Repository {
+    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    override var lastPhone: String?
+        get() = preferences.getString(LAST_PHONE, "")
+        set(phoneNumber) {
+            preferences.edit().putString(LAST_PHONE, phoneNumber).apply()
+        }
+    override var lastCountryCode: Int
+        get() = preferences.getInt(LAST_COUNTRY_CODE, 0)
+        set(phoneCode) {
+            preferences.edit().putInt(LAST_COUNTRY_CODE, phoneCode).apply()
+        }
+
     companion object {
-        private const val KEY_PHONE = "phone"
-        private const val KEY_CYCLES = "cycles"
-    }
-
-    fun getPhone() : String {
-        return prefs.getString(KEY_PHONE, "")!!
-    }
-
-    fun setPhone(phone: String) {
-        prefs.edit().apply {
-            putString(KEY_PHONE, phone)
-            apply()
-        }
-    }
-
-    fun getCycles() : Int {
-        return prefs.getInt(KEY_CYCLES, 1)
-    }
-
-    fun setCycles(cycles: Int) {
-        prefs.edit().apply {
-            putInt(KEY_CYCLES, cycles)
-            apply()
-        }
+        private const val LAST_PHONE = "last_phone"
+        private const val LAST_COUNTRY_CODE = "last_country_code"
     }
 }

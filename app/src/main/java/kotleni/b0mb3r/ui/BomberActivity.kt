@@ -3,23 +3,24 @@ package kotleni.b0mb3r.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatSpinner
+import androidx.lifecycle.ViewModelProvider
+import androidx.work.WorkManager
 import com.dm.bomber.R
 import com.google.android.material.button.MaterialButton
-import kotleni.b0mb3r.Bomber
-import kotleni.b0mb3r.Phone
+import com.google.android.material.snackbar.Snackbar
+import kotleni.b0mb3r.GITHUB_URL
 import kotleni.b0mb3r.TELEGRAM_URL
+import kotleni.b0mb3r.ui.adapters.CountryCodeAdapter
 import kotleni.b0mb3r.ui.dialog.ProgressDialog
 
 
-class BomberActivity : AppCompatActivity(), MainView {
+class BomberActivity : AppCompatActivity() {
     companion object {
-        var globalRepository: MainRepository? = null
+        const val TASK_ID = "taskBomber"
     }
 
     private val githubLnk: TextView by lazy { findViewById(R.id.github_lnk) }
@@ -27,64 +28,74 @@ class BomberActivity : AppCompatActivity(), MainView {
     private val startBtn: MaterialButton by lazy { findViewById(R.id.start_btn) }
     private val cyclesText: EditText by lazy { findViewById(R.id.cycles) }
     private val phoneText: EditText by lazy { findViewById(R.id.phone) }
-    private val logoImage: ImageView by lazy { findViewById(R.id.logo) }
+    private val phoneCode: AppCompatSpinner by lazy { findViewById(R.id.phone_code) }
 
-    //private var mInterstitialAd: InterstitialAd? = null
+    private var model: MainViewModel? = null
+    private var repository: Repository? = null
 
-    private val repo: MainRepository by lazy { MainRepository(getSharedPreferences(packageName, MODE_PRIVATE)) }
+    private val clipText: String? = null
+
+    private val countryCodes = arrayOf("7", "380", "375", "77", "")
+    private val phoneLength = intArrayOf(10, 9, 9, 9, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bomber)
 
-        logoImage.setOnLongClickListener {
-            val app = packageManager.getPackageInfo(packageName, 0)
-            Toast.makeText(this, "${app.versionName} (${app.versionCode})", Toast.LENGTH_SHORT).show()
-            true
+        val workManager: WorkManager = WorkManager.getInstance(this)
+
+        repository = MainRepository(this)
+        model = ViewModelProvider(
+            this,
+            MainModelFactory(repository!!, workManager) as ViewModelProvider.Factory
+        ).get(MainViewModel::class.java)
+
+        val dialog = ProgressDialog(this)
+
+        model?.getProgress()?.observe(this) { (first, second): Pair<Int, Int> ->
+            // update progress
+        }
+
+        model?.getAttackStatus()?.observe(this) { attackStatus: Boolean ->
+            if (attackStatus) {
+                // attack start
+                dialog.show()
+            } else {
+                // attack stop
+                dialog.doneExit()
+            }
+        }
+
+        githubLnk.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL)))
         }
 
         telegramLnk.setOnClickListener {
-            openUrl(TELEGRAM_URL)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TELEGRAM_URL)))
         }
 
-        globalRepository = repo
-        MainPresenter(this, repo)
-    }
+        val countryCodeAdapter = CountryCodeAdapter(
+            this,
+            countryCodes
+        )
+        phoneCode.setAdapter(countryCodeAdapter)
 
-    override fun startAttack() {
-        repo.setPhone(phoneText.text.toString())
-        repo.setCycles(cyclesText.text.toString().toInt())
+        startBtn.setOnClickListener {
+            val phoneNumber: String = phoneText.getText().toString()
+            val repeats: String = cyclesText.getText().toString()
 
-        val phone = Phone.parseFrom(phoneText.text.toString())
+            val length = phoneLength[phoneCode.getSelectedItemPosition()]
+            if (phoneNumber.length != length && length != 0) {
+                Snackbar.make(githubLnk, "Неверный номер телефона", Snackbar.LENGTH_LONG).show()
+            } else {
+                repository?.lastCountryCode = phoneCode.getSelectedItemPosition()
+                repository?.lastPhone = phoneNumber
 
-        if(phone == null) {
-            Toast.makeText(this, "Ошибка разбора номера", Toast.LENGTH_SHORT).show()
-        } else {
-            val dialog = ProgressDialog(this)
-            val bomber = Bomber(phone, cyclesText.text.toString().toInt())
-
-            bomber.setOnUpdateProgress { dialog.updateProgress(it) }
-            bomber.setOnFinish { dialog.doneExit() }
-            bomber.start()
-            dialog.show()
+                model!!.startAttack(
+                    countryCodes[phoneCode.getSelectedItemPosition()], phoneNumber,
+                    if (repeats.isEmpty()) 1 else repeats.toInt()
+                )
+            }
         }
-    }
-
-    override fun openUrl(url: String) {
-        val uri = Uri.parse(url)
-        startActivity(Intent(Intent.ACTION_VIEW, uri))
-    }
-
-    override fun setOnGithubOpen(handler: () -> Unit) {
-        githubLnk.setOnClickListener { handler.invoke() }
-    }
-
-    override fun setOnStart(handler: () -> Unit) {
-        startBtn.setOnClickListener { handler.invoke() }
-    }
-
-    override fun loadPrefs() {
-        phoneText.setText(repo.getPhone())
-        cyclesText.setText(repo.getCycles().toString())
     }
 }

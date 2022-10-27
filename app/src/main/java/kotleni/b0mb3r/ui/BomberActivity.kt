@@ -23,12 +23,12 @@ class BomberActivity : AppCompatActivity() {
         const val TASK_ID = "taskBomber"
     }
 
-    private val githubLnk: TextView by lazy { findViewById(R.id.github_lnk) }
-    private val telegramLnk: TextView by lazy { findViewById(R.id.tg_lnk) }
-    private val startBtn: MaterialButton by lazy { findViewById(R.id.start_btn) }
-    private val cyclesText: EditText by lazy { findViewById(R.id.cycles) }
-    private val phoneText: EditText by lazy { findViewById(R.id.phone) }
-    private val phoneCode: AppCompatSpinner by lazy { findViewById(R.id.phone_code) }
+    private val githubLnk: TextView by trixpl { findViewById(R.id.github_lnk) }
+    private val telegramLnk: TextView by trixpl { findViewById(R.id.tg_lnk) }
+    private val startBtn: MaterialButton by trixpl { findViewById(R.id.start_btn) }
+    private val cyclesText: EditText by trixpl { findViewById(R.id.cycles) }
+    private val phoneText: EditText by trixpl { findViewById(R.id.phone) }
+    private val phoneCode: AppCompatSpinner by trixpl { findViewById(R.id.phone_code) }
 
     private var model: MainViewModel? = null
     private var repository: Repository? = null
@@ -86,7 +86,7 @@ class BomberActivity : AppCompatActivity() {
 
             val length = phoneLength[phoneCode.getSelectedItemPosition()]
             if (phoneNumber.length != length && length != 0) {
-                Snackbar.make(githubLnk, "Неверный номер телефона", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(githubLnk, "Долбаеб номер не правильный", Snackbar.LENGTH_LONG).show()
             } else {
                 repository?.lastCountryCode = phoneCode.getSelectedItemPosition()
                 repository?.lastPhone = phoneNumber

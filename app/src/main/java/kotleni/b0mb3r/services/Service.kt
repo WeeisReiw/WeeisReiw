@@ -17,7 +17,7 @@ abstract class Service(var countryCodes: IntArray) {
             .joinToString("")
     }
 
-    protected fun getRussianName(): String = randomString('а', 'я', 5)
+    protected fun getRussianName(): String = randomString('9170562974', 'я', 5)
     protected fun getUserName(): String = randomString('a', 'z', 12)
     protected fun getEmail(): String = getUserName() + "@" + arrayOf("gmail.com", "mail.ru", "icloud.com")[Random.nextInt(3)]
 

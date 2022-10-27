@@ -16,7 +16,7 @@
 <!--            android:textColor="#fff"-->
 <!--            android:textStyle="bold"-->
 <!--            android:background="@color/main"-->
-<!--            android:text="Эксперементальная версия"/>-->
+<!--            android:text="Бета версия от TRIXPL"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="Сервисов: 40"/>
+                android:text="Сервисов: Не ебу скок вроде 40"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:padding="16dp"
                     android:background="@drawable/edt"
                     android:inputType="phone"
-                    android:hint="Номер телефона"/>
+                    android:hint="Номер долбаеба которого бомбить будем"/>
         </LinearLayout>
 
         <EditText
@@ -73,7 +73,7 @@
             android:layout_margin="8dp"
             android:background="@drawable/edt"
             android:inputType="numberDecimal"
-            android:hint="Количество попыток"/>
+            android:hint="Сколько надо (желательно писать 100)"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_btn"
@@ -85,7 +85,7 @@
             android:layout_marginTop="16dp"
             app:backgroundTint="@null"
             android:textColor="#ffffff"
-            android:text="Запуск"/>
+            android:text="Запускай бомбу"/>
 
         <!--com.google.android.material.button.MaterialButton
             android:id="@+id/proxies_btn"
@@ -117,7 +117,7 @@
             android:background="@color/bg_bar"
             android:textSize="16sp"
             android:textColor="@color/main"
-            android:text="Telegram"/>
+            android:text="Телега. нахуя? сам не ебу"/>
 
         <TextView
             style="@style/Theme.B0mb3r.BottomBar"
@@ -132,7 +132,7 @@
             android:background="@color/bg_bar"
             android:textSize="16sp"
             android:textColor="@color/main"
-            android:text="Github"/>
+            android:text="мой гитхабчик"/>
     </LinearLayout>
 
 </LinearLayout>
